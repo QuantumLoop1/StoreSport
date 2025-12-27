@@ -1,0 +1,20 @@
+@model PagingInfo
+
+@if (Model.TotalPages > 1)
+{
+    <nav>
+        <ul class="pagination">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-productPage="@i"
+                       asp-route-category="@ViewContext.RouteData.Values["category"]">
+                        @i
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

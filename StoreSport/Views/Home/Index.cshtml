@@ -1,0 +1,43 @@
+@model ProductsListViewModel
+@{
+    ViewBag.Title = "Products";
+}
+
+<div class="row">
+    <div class="col-3">
+      <vc:navigation-menu />
+    </div>
+    <div class="col-9">
+    @foreach (var p in Model.Products)
+        {
+            <div class="card m-1 p-1">
+                <div class="bg-light p-2">
+                  <h4>
+    @p.Name
+       <span class="badge rounded-pill bg-primary float-end">
+       @p.Price.ToString("c")
+              </span>
+         </h4>
+      </div>
+        <div class="card-body">
+   <p class="card-text">@p.Description</p>
+         <form id="@p.ProductId" asp-action="AddToCart" asp-controller="Cart" method="post">
+ <input type="hidden" name="productId" value="@p.ProductId" />
+ <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+       <button type="submit" class="btn btn-success btn-sm float-end">
+       Add To Cart
+      </button>
+            </form>
+     </div>
+            </div>
+   }
+        
+        <div page-model="@Model.PagingInfo" page-action="Index" 
+             page-classes-enabled="true"
+             page-class="btn" page-class-normal="btn-outline-dark"
+             page-class-selected="btn-primary" 
+    page-url-category="@Model.CurrentCategory"
+ class="btn-group pull-right m-1">
+     </div>
+    </div>
+</div>
