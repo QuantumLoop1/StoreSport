@@ -3,37 +3,37 @@ using StoreSport.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Добавление сервисов MVC и Razor Pages
+// Add MVC and Razor Pages services
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-// Настройка DbContext
+// Configure DbContext
 builder.Services.AddDbContext<StoreDbContext>(opts =>
 {
     opts.UseSqlServer(
         builder.Configuration["ConnectionStrings:StoreSportConnection"]);
 });
 
-// Регистрация репозиториев
+// Register repositories
 builder.Services.AddScoped<IStoreRepository, EFStoreRepository>();
 builder.Services.AddScoped<IOrderRepository, EFOrderRepository>();
 
-// Настройка корзины
+// Configure cart
 builder.Services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-// Добавление поддержки сессий
+// Add session support
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true; // Важно для работы без согласия на куки
+    options.Cookie.IsEssential = true;
 });
 
 var app = builder.Build();
 
-// Настройка HTTP request pipeline
+// Configure HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -42,10 +42,13 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseSession();
 
+// MapDefaultControllerRoute must be before custom routes
+app.MapDefaultControllerRoute();
+
 app.MapControllerRoute(
     name: "catpage",
     pattern: "{category}/Page{productPage:int}",
-    defaults: new { Controller = "Home", action = "Index" });
+ defaults: new { Controller = "Home", action = "Index" });
 
 app.MapControllerRoute(
     name: "page",
@@ -58,14 +61,16 @@ app.MapControllerRoute(
     defaults: new { Controller = "Home", action = "Index", productPage = 1 });
 
 app.MapControllerRoute(
-    name: "pagination",
+  name: "pagination",
     pattern: "Products/Page{productPage}",
     defaults: new { Controller = "Home", action = "Index" });
 
-app.MapDefaultControllerRoute();
 app.MapRazorPages();
 
-// Инициализация базы данных
+// Initialize database
 SeedData.EnsurePopulated(app);
 
 app.Run();
+
+// Make Program class accessible for tests
+public partial class Program { }

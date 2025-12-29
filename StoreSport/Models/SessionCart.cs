@@ -5,34 +5,36 @@ namespace StoreSport.Models
 {
     public class SessionCart : Cart
     {
- public static Cart GetCart(IServiceProvider services)
-  {
- ISession? session = services.GetRequiredService<IHttpContextAccessor>()
-     .HttpContext?.Session;
-         SessionCart cart = session?.GetJson<SessionCart>("Cart") ?? new SessionCart();
-     cart.Session = session;
-   return cart;
- }
-
-        [System.Text.Json.Serialization.JsonIgnore]
-     public ISession? Session { get; set; }
-
-      public override void AddItem(Product product, int quantity)
+        public static Cart GetCart(IServiceProvider services)
         {
-   base.AddItem(product, quantity);
-   Session?.SetJson("Cart", this);
-   }
+            ISession? session = services.GetRequiredService<IHttpContextAccessor>()
+                .HttpContext?.Session;
 
-        public override void RemoveLine(Product product)
- {
-   base.RemoveLine(product);
-     Session?.SetJson("Cart", this);
+            SessionCart cart = session?.GetJson<SessionCart>("Cart") ?? new SessionCart();
+            cart.Session = session;
+
+            return cart;
         }
 
-  public override void Clear()
+        [System.Text.Json.Serialization.JsonIgnore]
+        public ISession? Session { get; set; }
+
+        public override void AddItem(Product product, int quantity)
         {
-base.Clear();
-      Session?.Remove("Cart");
+            base.AddItem(product, quantity);
+            Session?.SetJson("Cart", this);
+        }
+
+        public override void RemoveLine(Product product)
+        {
+            base.RemoveLine(product);
+            Session?.SetJson("Cart", this);
+        }
+
+        public override void Clear()
+        {
+            base.Clear();
+            Session?.Remove("Cart");
         }
     }
 }

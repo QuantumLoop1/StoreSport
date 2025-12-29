@@ -26,71 +26,71 @@ namespace StoreSport.Models
 
                     if (!context.Products.Any())
                     {
-                        logger.LogInformation("База данных пустая. Добавление тестовых товаров...");
+                        logger.LogInformation("База данных пустая. Добавление начальных данных...");
 
                         context.Products.AddRange(
                             new Product
                             {
-                                Name = "Футбольный мяч",
-                                Description = "Профессиональный футбольный мяч FIFA",
-                                Category = "Футбол",
-                                Price = 2500
+                                Name = "Kayak",
+                                Description = "A boat for one person",
+                                Category = "Watersports",
+                                Price = 275
                             },
                             new Product
                             {
-                                Name = "Баскетбольный мяч",
-                                Description = "Мяч для баскетбола размер 7",
-                                Category = "Баскетбол",
-                                Price = 1800
+                                Name = "Lifejacket",
+                                Description = "Protective and fashionable",
+                                Category = "Watersports",
+                                Price = 48.95m
                             },
                             new Product
                             {
-                                Name = "Теннисная ракетка",
-                                Description = "Профессиональная теннисная ракетка",
-                                Category = "Теннис",
-                                Price = 5500
+                                Name = "Soccer Ball",
+                                Description = "FIFA-approved size and weight",
+                                Category = "Soccer",
+                                Price = 19.50m
                             },
                             new Product
                             {
-                                Name = "Волейбольный мяч",
-                                Description = "Мяч для волейбола",
-                                Category = "Волейбол",
-                                Price = 1500
+                                Name = "Corner Flags",
+                                Description = "Give your playing field a professional touch",
+                                Category = "Soccer",
+                                Price = 34.95m
                             },
                             new Product
                             {
-                                Name = "Футбольные бутсы",
-                                Description = "Профессиональные бутсы Nike",
-                                Category = "Футбол",
-                                Price = 8000
+                                Name = "Stadium",
+                                Description = "Flat-packed 35,000-seat stadium",
+                                Category = "Soccer",
+                                Price = 79500
                             },
                             new Product
                             {
-                                Name = "Баскетбольные кроссовки",
-                                Description = "Кроссовки для баскетбола",
-                                Category = "Баскетбол",
-                                Price = 9500
+                                Name = "Thinking Cap",
+                                Description = "Improve brain efficiency by 75%",
+                                Category = "Chess",
+                                Price = 16
                             },
                             new Product
                             {
-                                Name = "Теннисные мячи",
-                                Description = "Набор теннисных мячей 3 шт",
-                                Category = "Теннис",
-                                Price = 450
+                                Name = "Unsteady Chair",
+                                Description = "Secretly give your opponent a disadvantage",
+                                Category = "Chess",
+                                Price = 29.95m
                             },
                             new Product
                             {
-                                Name = "Волейбольная сетка",
-                                Description = "Профессиональная волейбольная сетка",
-                                Category = "Волейбол",
-                                Price = 3500
+                                Name = "Human Chess Board",
+                                Description = "A fun game for the family",
+                                Category = "Chess",
+                                Price = 75
                             },
                             new Product
                             {
-                                Name = "Футбольная форма",
-                                Description = "Комплект футбольной формы",
-                                Category = "Футбол",
-                                Price = 3200
+                                Name = "Bling-Bling King",
+                                Description = "Gold-plated, diamond-studded King",
+                                Category = "Chess",
+                                Price = 1200
                             }
                         );
 

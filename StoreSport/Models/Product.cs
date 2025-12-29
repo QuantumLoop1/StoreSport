@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace StoreSport.Models
 {
@@ -17,7 +16,7 @@ namespace StoreSport.Models
         [Range(0.01, double.MaxValue, ErrorMessage = "Пожалуйста, введите положительную цену")]
         public decimal Price { get; set; }
 
-        [Required(ErrorMessage = "Пожалуйста, укажите категорию")]
+        [Required(ErrorMessage = "Пожалуйста, введите категорию")]
         public string Category { get; set; } = string.Empty;
     }
 }

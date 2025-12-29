@@ -20,7 +20,7 @@ namespace StoreSport.Models
         [Required(ErrorMessage = "Пожалуйста, введите город")]
         public string City { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Пожалуйста, введите регион")]
+        [Required(ErrorMessage = "Пожалуйста, введите штат")]
         public string? State { get; set; }
 
         public string? Zip { get; set; }
@@ -30,4 +30,10 @@ namespace StoreSport.Models
 
         public bool GiftWrap { get; set; }
     }
+}
+
+namespace SportsStore.Models
+{
+    // Alias for test compatibility
+    public class Order : StoreSport.Models.Order { }
 }

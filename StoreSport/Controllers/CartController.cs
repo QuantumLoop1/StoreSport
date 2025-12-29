@@ -24,7 +24,8 @@ namespace StoreSport.Controllers
             });
         }
 
-        public RedirectToActionResult AddToCart(int productId, string returnUrl)
+        [HttpPost]
+        public IActionResult AddToCart(int productId, string returnUrl)
         {
             Product? product = repository.Products
                 .FirstOrDefault(p => p.ProductId == productId);
@@ -38,7 +39,7 @@ namespace StoreSport.Controllers
                 }
             }
 
-            return RedirectToAction("Index", new { returnUrl });
+            return Redirect(returnUrl ?? "/");
         }
 
         public RedirectToActionResult RemoveFromCart(int productId, string returnUrl)
@@ -58,11 +59,11 @@ namespace StoreSport.Controllers
             return RedirectToAction("Index", new { returnUrl });
         }
 
-        // API дл€ получени€ количества товаров в корзине (дл€ AJAX)
         [HttpGet]
-        public JsonResult GetCartCount()
+        public JsonResult GetCartItemCount()
         {
-            return Json(new { count = cart.Lines.Sum(l => l.Quantity) });
+            int count = cart.Lines.Sum(l => l.Quantity);
+            return Json(new { count });
         }
     }
 }

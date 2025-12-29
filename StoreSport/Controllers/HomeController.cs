@@ -16,6 +16,12 @@ namespace StoreSport.Controllers
 
         public ViewResult Index(string? category, int productPage = 1)
         {
+            // Ensure productPage is at least 1
+            if (productPage < 1)
+            {
+                productPage = 1;
+            }
+
             var productsQuery = repository.Products
                 .Where(p => category == null || p.Category == category)
                 .OrderBy(p => p.ProductId);

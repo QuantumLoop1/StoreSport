@@ -1,95 +1,86 @@
 @model Order
 @{
-    ViewBag.Title = "Checkout";
-    Cart cart = ViewBag.Cart;
+  Cart cart = ViewBag.Cart;
 }
 
-<h2>Check out now</h2>
-<p>Please enter your details, and we'll ship your goods right away!</p>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h4 class="mb-0">Checkout</h4>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-sm">Back</a>
+</div>
 
 @if (cart == null || !cart.Lines.Any())
 {
-    <div class="alert alert-warning">
-        <strong>Your cart is empty!</strong>
-   <a asp-controller="Home" asp-action="Index" class="btn btn-primary ms-3">Go Shopping</a>
+    <div class="alert alert-secondary">
+        Your cart is empty. <a asp-controller="Home" asp-action="Index">Continue shopping</a>
     </div>
 }
 else
 {
     <div class="row">
-        <div class="col-md-6">
-       <h4>Order Summary</h4>
-      <table class="table table-sm table-bordered">
-      <thead class="table-light">
-   <tr>
-           <th>Product</th>
-       <th class="text-center">Qty</th>
-  <th class="text-end">Price</th>
-         <th class="text-end">Subtotal</th>
-     </tr>
-      </thead>
-  <tbody>
-          @foreach (var line in cart.Lines)
-      {
-       <tr>
-   <td>@line.Product.Name</td>
-  <td class="text-center">@line.Quantity</td>
-  <td class="text-end">@line.Product.Price.ToString("c")</td>
-   <td class="text-end">@((line.Quantity * line.Product.Price).ToString("c"))</td>
-    </tr>
-}
-           </tbody>
-    <tfoot>
-         <tr class="table-dark">
-   <td colspan="3" class="text-end fw-bold">Total:</td>
-                  <td class="text-end fw-bold">@cart.ComputeTotalValue().ToString("c")</td>
-           </tr>
- </tfoot>
-      </table>
-      </div>
-
-        <div class="col-md-6">
-   <h4>Shipping Details</h4>
-  <div asp-validation-summary="All" class="text-danger"></div>
-
- <form asp-action="Checkout" method="post">
-                <div class="form-group mb-2">
-           <label asp-for="Name">Name:</label>
-           <input asp-for="Name" class="form-control" />
-           <span asp-validation-for="Name" class="text-danger"></span>
+  <div class="col-md-6 mb-4">
+      <div class="card p-3">
+          <h6 class="text-muted mb-3">Order Summary</h6>
+     @foreach (var line in cart.Lines)
+            {
+  <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+       <div>
+    <strong>@line.Product.Name</strong>
+    <small class="text-muted d-block">@line.Product.Price.ToString("c") x @line.Quantity</small>
      </div>
-                <div class="form-group mb-2">
-     <label asp-for="Address">Address:</label>
-           <input asp-for="Address" class="form-control" />
-        <span asp-validation-for="Address" class="text-danger"></span>
-     </div>
-     <div class="form-group mb-2">
-           <label asp-for="City">City:</label>
-           <input asp-for="City" class="form-control" />
-               <span asp-validation-for="City" class="text-danger"></span>
-    </div>
-       <div class="form-group mb-2">
-   <label asp-for="State">State:</label>
-         <input asp-for="State" class="form-control" />
-    </div>
-  <div class="form-group mb-2">
-        <label asp-for="Zip">Zip:</label>
-     <input asp-for="Zip" class="form-control" />
-  </div>
-           <div class="form-group mb-2">
-     <label asp-for="Country">Country:</label>
-     <input asp-for="Country" class="form-control" />
-          <span asp-validation-for="Country" class="text-danger"></span>
- </div>
-                <div class="form-check mb-3">
-       <input asp-for="GiftWrap" class="form-check-input" />
-      <label asp-for="GiftWrap" class="form-check-label">Gift wrap these items</label>
-    </div>
-     <div class="d-grid gap-2">
-        <button class="btn btn-primary btn-lg" type="submit">Complete Order</button>
-     <a class="btn btn-secondary" asp-controller="Cart" asp-action="Index">Back to Cart</a>
-           </div>
+     <div class="d-flex align-items-center gap-2">
+                 <span class="fw-bold">@((line.Quantity * line.Product.Price).ToString("c"))</span>
+                <form asp-action="RemoveFromCart" asp-controller="Cart" method="post" class="d-inline">
+      <input type="hidden" name="productId" value="@line.Product.ProductId" />
+    <input type="hidden" name="returnUrl" value="/Order/Checkout" />
+      <button type="submit" class="btn btn-sm btn-outline-danger" title="Remove">Remove</button>
         </form>
+    </div>
+      </div>
+         }
+       <div class="d-flex justify-content-between pt-3">
+         <strong>Total</strong>
+       <strong class="fs-5">@cart.ComputeTotalValue().ToString("c")</strong>
+      </div>
+  </div>
+    </div>
+
+        <div class="col-md-6 mb-4">
+  <div class="card p-3">
+                <h6 class="text-muted mb-3">Shipping Details</h6>
+          <div asp-validation-summary="All" class="text-danger mb-2"></div>
+
+                <form asp-action="Checkout" method="post">
+         <div class="mb-2">
+        <input asp-for="Name" class="form-control form-control-sm" placeholder="Name" />
+       <span asp-validation-for="Name" class="text-danger small"></span>
+         </div>
+     <div class="mb-2">
+      <input asp-for="Address" class="form-control form-control-sm" placeholder="Address" />
+                 <span asp-validation-for="Address" class="text-danger small"></span>
+    </div>
+        <div class="row mb-2">
+       <div class="col">
+       <input asp-for="City" class="form-control form-control-sm" placeholder="City" />
+         </div>
+      <div class="col">
+             <input asp-for="State" class="form-control form-control-sm" placeholder="State" />
+      </div>
+      </div>
+  <div class="row mb-2">
+           <div class="col">
+    <input asp-for="Zip" class="form-control form-control-sm" placeholder="Zip" />
+        </div>
+      <div class="col">
+            <input asp-for="Country" class="form-control form-control-sm" placeholder="Country" />
+            </div>
+    </div>
+     <div class="form-check mb-3">
+           <input asp-for="GiftWrap" class="form-check-input" />
+             <label asp-for="GiftWrap" class="form-check-label small">Gift wrap</label>
+             </div>
+         <button class="btn btn-dark w-100" type="submit">Complete Order</button>
+     </form>
+            </div>
         </div>
     </div>
 }

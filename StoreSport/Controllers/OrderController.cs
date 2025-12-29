@@ -25,7 +25,7 @@ namespace StoreSport.Controllers
         {
             if (cart.Lines.Count == 0)
             {
-                ModelState.AddModelError("", "Извините, ваша корзина пуста!");
+                ModelState.AddModelError("", "Sorry, your cart is empty!");
             }
 
             if (ModelState.IsValid)
